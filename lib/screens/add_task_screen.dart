@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todoer/models/task_data.dart';
 
 class AddTaskScreen extends StatefulWidget {
-  final Function taskCallback;
-
-  const AddTaskScreen({this.taskCallback});
-
   @override
   _AddTaskScreenState createState() => _AddTaskScreenState();
 }
 
 class _AddTaskScreenState extends State<AddTaskScreen> {
-  var taskName;
+  String taskName;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -46,6 +45,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 autofocus: true,
                 onChanged: (newValue) {
                   taskName = newValue;
+                  print(newValue);
                 },
               ),
               SizedBox(
@@ -53,7 +53,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               ),
               FlatButton(
                 onPressed: () {
-                  widget.taskCallback(taskName);
+                  Provider.of<TaskData>(context, listen: false)
+                      .addTask(taskName);
+                  Navigator.pop(context);
                 },
                 color: Colors.lightBlueAccent,
                 child: Text(
